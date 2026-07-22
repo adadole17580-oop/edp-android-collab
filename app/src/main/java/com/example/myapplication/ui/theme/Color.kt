@@ -2,10 +2,18 @@ package com.example.myapplication.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// Light Theme
+val PrimaryLight = Color(0xFF8F5A5A)
+val OnPrimaryLight = Color.White
+val PrimaryContainerLight = Color(0xFFB57A7A)
+val SecondaryLight = Color(0xFFD8B4B4)
+val SurfaceLight = Color(0xFFFFF8F7)
+val OnSurfaceVariantLight = Color(0xFF6F4B4B)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+// Dark Theme
+val PrimaryDark = Color(0xFFD6A5A5)
+val OnPrimaryDark = Color(0xFF4B2323)
+val PrimaryContainerDark = Color(0xFF6B3A3A)
+val SecondaryDark = Color(0xFFC99494)
+val SurfaceDark = Color(0xFF2D1A1A)
+val OnSurfaceVariantDark = Color(0xFFE9D3D3)
