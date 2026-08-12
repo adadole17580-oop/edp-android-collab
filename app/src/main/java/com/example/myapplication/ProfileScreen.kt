@@ -1,188 +1,201 @@
 package com.example.myapplication
 
-import android.content.res.Configuration
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Class
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.School
-import androidx.compose.material3.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.myapplication.ui.theme.ProfileTheme
-@Composable
-fun ProfileScreen() {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.myapplication.ui.theme.ProfileUiState
+import com.example.myapplication.ui.theme.ProfileViewModel
 
-        }
-    }
+@Composable
+fun ProfileForm(state: ProfileUiState, viewModel: ProfileViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-
-        verticalArrangement = Arrangement.Center
+            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        Box(
-            modifier = Modifier
-                .size(120.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary)
-                .border(
-                    2.dp,
-                    MaterialTheme.colorScheme.onPrimary,
-                    CircleShape
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "AD",
-                color = MaterialTheme.colorScheme.onPrimary,
-                style = MaterialTheme.typography.headlineSmall
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = "Angel Dadole",
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.primary
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = "BSIT 3-2",
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Card(
+        ElevatedCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .padding(vertical = 8.dp)
         ) {
-
             Column(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
             ) {
+                Text(
+                    text = "My Profile",
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(Modifier.height(16.dp))
 
-                InfoRow(
-                    Icons.Default.Person,
-                    "Full Name",
-                    "Angel Dadole"
+                OutlinedTextField(
+                    value = state.name,
+                    onValueChange = { viewModel.onNameChange(it) },
+                    label = { Text("Full name") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                OutlinedTextField(
+                    value = state.email,
+                    onValueChange = { viewModel.onEmailChange(it) },
+                    label = { Text("Email") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                OutlinedTextField(
+                    value = state.contactNumber,
+                    onValueChange = { viewModel.onContactChange(it) },
+                    label = { Text("Contact number") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                OutlinedTextField(
+                    value = state.address,
+                    onValueChange = { viewModel.onAddressChange(it) },
+                    label = { Text("Address") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                OutlinedTextField(
+                    value = state.username,
+                    onValueChange = { viewModel.onUsernameChange(it) },
+                    label = { Text("Username") },
+                    modifier = Modifier.fillMaxWidth()
                 )
 
-                InfoRow(
-                    Icons.Default.School,
-                    "Course",
-                    "Bachelor of Science in Information Technology"
+                Spacer(Modifier.height(24.dp))
+                Text(
+                    text = "Skills",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.secondary
                 )
 
-                InfoRow(
-                    Icons.Default.Class,
-                    "Section",
-                    "3-2"
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(top = 8.dp)
+                ) {
+                    OutlinedTextField(
+                        value = state.newSkill,
+                        onValueChange = { viewModel.onNewSkillChange(it) },
+                        label = { Text("Add a skill") },
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Button(onClick = { viewModel.addSkill() }) {
+                        Text("Add")
+                    }
+                }
 
-                InfoRow(
-                    Icons.Default.Phone,
-                    "Mobile Number",
-                    "0975-962-2636"
-                )
+                state.skills.forEach { skill ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("• $skill", modifier = Modifier.weight(1f))
+                        TextButton(onClick = { viewModel.removeSkill(skill) }) {
+                            Text("Remove")
+                        }
+                    }
+                }
 
-                InfoRow(
-                    Icons.Default.Email,
-                    "Email Address",
-                    "adadole17580@liceo.edu.ph"
-                )
+                Spacer(Modifier.height(24.dp))
+                Button(
+                    onClick = { viewModel.showPreview() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Preview")
+                }
             }
         }
     }
 }
 
 @Composable
-fun InfoRow(
-    icon: ImageVector,
-    label: String,
-    value: String
-) {
-
-    Row(
+fun ProfilePreview(state: ProfileUiState, onBack: () -> Unit) {
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-
-        verticalAlignment = Alignment.CenterVertically
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        Icon(
-            imageVector = icon,
-            contentDescription = label,
-            tint = MaterialTheme.colorScheme.primary
-        )
-
-        Spacer(modifier = Modifier.width(16.dp))
-
-        Column(
-            modifier = Modifier.weight(1f)
+        ElevatedCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
         ) {
+            Column(
+                modifier = Modifier
+                    .padding(24.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = "Profile Preview",
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(Modifier.height(16.dp))
 
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+                Text("Name: ${state.name}", style = MaterialTheme.typography.bodyLarge)
+                Text("Email: ${state.email}", style = MaterialTheme.typography.bodyLarge)
+                Text("Contact: ${state.contactNumber}", style = MaterialTheme.typography.bodyLarge)
+                Text("Address: ${state.address}", style = MaterialTheme.typography.bodyLarge)
+                Text("Username: ${state.username}", style = MaterialTheme.typography.bodyLarge)
 
-            Text(
-                text = value,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface
-            )
+                Spacer(Modifier.height(24.dp))
+                Text(
+                    text = "Skills:",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+                if (state.skills.isEmpty()) {
+                    Text("No skills added yet.", style = MaterialTheme.typography.bodyMedium)
+                } else {
+                    state.skills.forEach { skill ->
+                        Text("• $skill", style = MaterialTheme.typography.bodyLarge)
+                    }
+                }
+
+                Spacer(Modifier.height(32.dp))
+                OutlinedButton(
+                    onClick = onBack,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Back to edit")
+                }
+            }
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun PreviewLight() {
-    ProfileTheme(darkTheme = false) {
-        ProfileScreen()
+fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    if (state.isPreview) {
+        ProfilePreview(state = state, onBack = { viewModel.backToEdit() })
+    } else {
+        ProfileForm(state = state, viewModel = viewModel)
     }
 }
 
-@Preview(
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
-@Composable
-fun PreviewDark() {
-    ProfileTheme(darkTheme = true) {
-        ProfileScreen()
-    }
-}
+
+

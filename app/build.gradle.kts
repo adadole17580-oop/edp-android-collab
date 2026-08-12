@@ -38,6 +38,12 @@ android {
 }
 
 dependencies {
+
+    val lifecycleVersion = "2.10.0"
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${lifecycleVersion}")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:${lifecycleVersion}")
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(platform("androidx.compose:compose-bom:<latest>"))
     implementation("androidx.compose.material3:material3")
