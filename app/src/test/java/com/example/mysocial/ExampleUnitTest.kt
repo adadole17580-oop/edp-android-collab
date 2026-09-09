@@ -1,4 +1,4 @@
-package com.example.midtermexam
+package com.example.mysocial
 
 import org.junit.Test
 
