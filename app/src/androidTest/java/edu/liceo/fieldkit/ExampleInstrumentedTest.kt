@@ -1,4 +1,4 @@
-package com.example.myapplication
+package edu.liceo.fieldkit
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
